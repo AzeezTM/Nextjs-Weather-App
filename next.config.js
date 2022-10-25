@@ -6,8 +6,8 @@ const nextConfig = {
 
 module.exports = {
   images: {
-    domain: [
-      "www.google.com" 
-    ]
-  }
+    domains: [
+      "media.wired.com"
+    ],
+  },
 }
