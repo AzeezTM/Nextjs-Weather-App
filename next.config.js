@@ -7,7 +7,8 @@ const nextConfig = {
 module.exports = {
   images: {
     domains: [
-      "media.wired.com"
+      "media.wired.com",
+      "openweathermap.org"
     ],
   },
 }

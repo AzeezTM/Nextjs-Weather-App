@@ -3,18 +3,20 @@ import Image from 'next/image'
 import axios from 'axios'
 import { useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import WeatherDis from '../component/WeatherDis';
+import Pulse from "../component/Pulse"
 
 
 
 
 export default function Home() {
   const [city, setCity] = useState("");
-  const [Weather, setWeather] = useState({});
+  const [weather, setWeather] = useState({});
   const [loading, setLoading] = useState(false);
   
  const ATM_KEY = "3b762aabb1ab28c97b70d949ba859ad4"
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=ibadan&units=imperial&appid=${ATM_KEY}`
-  
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${ATM_KEY}`
+  // console.log(city);
  
 
   const fetchWeather = (e) => {
@@ -22,11 +24,16 @@ export default function Home() {
   setLoading(true)
   axios.get(url).then((response) => {
     setWeather(response.data)
-    console.log(response.data);
+    // console.log(response.data);
   })
   setCity("");
   setLoading(false)
-} 
+} ;
+
+if (loading) {
+  return <Pulse/>
+  
+ }else{
 
   return (
     <div>
@@ -44,13 +51,18 @@ export default function Home() {
      />
 
      <div className="relative flex justify-between items-center max-w-[500px] w-full m-auto pt-4 text-white z-10">
-      <form className="flex justify-between items-center w-full m-auto p-3 bg-transparent border border-gray-300 text-white rounded-2xl">
+      <form onSubmit={fetchWeather} 
+      className="flex justify-between items-center w-full m-auto p-3 bg-transparent border border-gray-300 text-white rounded-2xl">
         <div>
-          <input className="bg-transparent border-none text-white focus:outline-none text-2xl" type-="text" placeholder="Search City"/>
+          <input onChange={(e) => setCity(e.target.value) }
+           className="bg-transparent border-none text-white focus:outline-none text-2xl" type-="text" placeholder="Search City"/>
         </div>
         <button onclick={fetchWeather}><BsSearch size={20}/></button>
       </form>
      </div>
+
+     {weather.main && <WeatherDis data={weather}/>}
     </div>
   )
+}
 }
